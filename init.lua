@@ -28,9 +28,6 @@ vim.opt.showmode = false
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
-end)
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -85,10 +82,13 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('n', 'H', '^', { noremap = true, silent = true })
 vim.keymap.set('n', 'L', '<End>', { noremap = true, silent = true })
 
-vim.keymap.set('n', 'P', '+p', { noremap = true, silent = true })
-vim.keymap.set('v', 'P', '+p', { noremap = true, silent = true })
-vim.keymap.set('v', 'Y', '+y', { noremap = true, silent = true })
+vim.keymap.set('n', 'P', '"+p', { noremap = true, silent = true })
+vim.keymap.set('v', 'P', '"+p', { noremap = true, silent = true })
+vim.keymap.set('v', 'Y', '"+y', { noremap = true, silent = true })
 
+vim.api.nvim_set_keymap('i', '<C-w>', '<C-o>db', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', '<leader>w', ':w<CR>', { noremap = true })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -769,6 +769,17 @@ require('lazy').setup({
       require('nvim-tree').setup {}
     end,
   },
+
+  {
+    'kylechui/nvim-surround',
+    version = '*', -- Use for stability; omit to use `main` branch for the latest features
+    event = 'VeryLazy',
+    config = function()
+      require('nvim-surround').setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
+  },
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
@@ -817,3 +828,5 @@ require('lazy').setup({
 -- vim: ts=2 sts=2 sw=2 et
 
 vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>b', ':NvimTreeFocus<CR>', { noremap = true, silent = true })
+require('nvim-surround').setup()

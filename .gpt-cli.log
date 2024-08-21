@@ -1,0 +1,68 @@
+2024-08-15 14:44:59,205 - gptcli - INFO - Starting a new chat session. Assistant config: {'messages': [{'role': 'system', 'content': "You are a helpful assistant who is an expert in software development. You are helping a user who is a software developer. Your responses are short and concise. You include code snippets when appropriate. Code snippets are formatted using Markdown with a correct language tag. User's `uname`: uname_result(system='Linux', node='Cameron-xps', release='5.15.0-1062-intel-iotg', version='#68-Ubuntu SMP Wed Jul 17 14:13:13 UTC 2024', machine='x86_64')"}, {'role': 'user', 'content': 'Your responses must be short and concise. Do not include explanations unless asked.'}, {'role': 'assistant', 'content': 'Understood.'}]}
+2024-08-15 14:44:59,218 - gptcli-session - INFO - Chat started
+2024-08-15 14:45:06,804 - gptcli - INFO - Starting a new chat session. Assistant config: {'model': 'gpt-4', 'temperature': 1.0}
+2024-08-15 14:45:06,817 - gptcli-session - INFO - Chat started
+2024-08-15 14:45:08,213 - gptcli-session - INFO - user: I want to make a bash script that installs all my regular dev tools. These tools include: 
+nvim, vim, vscode, chrome, spotify discord, warp, copyq, gimp, post man, gpt-cli, obsidian, npm, node, nvm, go,
+
+2024-08-15 14:45:09,268 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-08-15 14:45:32,114 - gptcli-session - INFO - assistant: Here's an example bash script that installs your required tools. 
+
+```sh
+#!/bin/bash
+
+# Update package lists
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+# Install nvim and vim
+sudo apt-get install -y neovim vim
+
+# Install Visual Studio Code
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+sudo apt-get update -y
+sudo apt-get install -y code
+
+# Install Chrome
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+rm google-chrome-stable_current_amd64.deb
+
+# Install Spotify
+snap install spotify
+
+#Install discord 
+wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+sudo dpkg -i discord.deb
+rm discord.deb
+
+# Install warp, copyq, gimp, postman, gpt-cli, obsidian (These will vary based on the source and installation method)
+
+# Install Node.js & npm
+curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Install nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+
+# Install GoLang
+wget https://golang.org/dl/go1.16.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.16.linux-amd64.tar.gz
+rm go1.16.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+source ~/.bashrc
+```
+This script is for a Debian based system (like Ubuntu). 
+
+Please Replace the `# Install warp, copyq, gimp, postman, gpt-cli, obsidian` comment with the appropriate installation commands as those apps are not typically installed with apt-get and might require different steps based on the source and installation method.
+
+Remember to make your script executable by using the command `chmod +x script.sh`.
+
+Also please note that the Node.js and npm version here is 14.x, you may adjust this based on your needs and also for GoLang version is 1.16. Adjust these as needed. Always keep an eye on the versions you need.
+
+Additionally, remember that any changes made in the bashrc file will only take effect in new terminal sessions - to use them immediately, you must either restart your terminal or execute source ~/.bashrc.
+2024-08-15 14:45:32,114 - gptcli-price - INFO - Token usage 671
+2024-08-15 14:45:32,114 - gptcli-price - INFO - Message price (model: gpt-4): $0.038
+2024-08-15 14:45:32,114 - gptcli-price - INFO - Current spend: $0.038
