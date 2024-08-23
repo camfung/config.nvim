@@ -780,6 +780,14 @@ require('lazy').setup({
       }
     end,
   },
+  {
+    'jose-elias-alvarez/null-ls.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+  },
+  {
+    'numToStr/Comment.nvim',
+    opts = {},
+  },
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
@@ -830,3 +838,14 @@ require('lazy').setup({
 vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>b', ':NvimTreeFocus<CR>', { noremap = true, silent = true })
 require('nvim-surround').setup()
+local null_ls = require 'null-ls'
+
+null_ls.setup {
+  sources = {
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.completion.spell,
+    null_ls.builtins.diagnostics.flake8,
+  },
+}
+require('Comment').setup()
