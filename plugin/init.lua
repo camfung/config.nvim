@@ -10,6 +10,9 @@ vim.keymap.set('v', 'Y', '"+y', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true, silent = true })
 
+vim.keymap.set('n', 'n', 'nzzzv', { noremap = true, silent = true })
+vim.keymap.set('n', 'N', 'Nzzzv', { noremap = true, silent = true })
+
 vim.api.nvim_set_keymap('i', '<C-w>', '<C-o>db', { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap('n', '<leader>w', ':w<CR>', { noremap = true })
