@@ -7,6 +7,9 @@ vim.keymap.set('n', 'P', '"+p', { noremap = true, silent = true })
 vim.keymap.set('n', 'Y', '"+yy', { noremap = true, silent = true })
 vim.keymap.set('v', 'Y', '"+y', { noremap = true, silent = true })
 
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true, silent = true })
+
 vim.api.nvim_set_keymap('i', '<C-w>', '<C-o>db', { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap('n', '<leader>w', ':w<CR>', { noremap = true })
@@ -56,4 +59,3 @@ require('lualine').setup {
   inactive_winbar = {},
   extensions = {},
 }
-
