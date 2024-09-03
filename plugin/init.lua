@@ -4,7 +4,7 @@ vim.keymap.set('n', 'L', '<End>', { noremap = true, silent = true })
 
 vim.keymap.set('n', 'P', '"+p', { noremap = true, silent = true })
 vim.keymap.set('n', 'P', '"+p', { noremap = true, silent = true })
-vim.keymap.set('n', 'Y', '"+yy', { noremap = true, silent = true })
+vim.keymap.set('n', 'Y', '"+y', { noremap = true, silent = true })
 vim.keymap.set('v', 'Y', '"+y', { noremap = true, silent = true })
 
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true, silent = true })
