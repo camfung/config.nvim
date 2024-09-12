@@ -481,11 +481,11 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         -- gopls = {},
-        pyright = {},
+        pyright = { 'black' },
         html = {},
         -- java_language_server = {},
         cssls = {},
-        markdown_oxide = {},
+        -- markdown_oxide = {},
 
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -493,7 +493,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        tsserver = {},
         --
 
         lua_ls = {
@@ -578,10 +578,10 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
