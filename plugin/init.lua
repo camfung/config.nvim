@@ -7,18 +7,22 @@ vim.keymap.set('n', 'P', '"+p', { noremap = true, silent = true })
 vim.keymap.set('n', 'Y', '"+y', { noremap = true, silent = true })
 vim.keymap.set('v', 'Y', '"+y', { noremap = true, silent = true })
 
-vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true, silent = true })
+vim.keymap.set('v', '<leader>p', '"_dp')
+
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true, silent = true })
 
 vim.keymap.set('n', 'n', 'nzzzv', { noremap = true, silent = true })
 vim.keymap.set('n', 'N', 'Nzzzv', { noremap = true, silent = true })
+
+vim.keymap.set('n', '{', '{zz', { noremap = true, silent = true })
+vim.keymap.set('n', '}', '}zz', { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap('i', '<C-w>', '<C-o>db', { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap('n', '<leader>w', ':w<CR>', { noremap = true })
 local builtin = require 'telescope.builtin'
 vim.keymap.set('n', '<C-p>', builtin.find_files)
-
 vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>b', ':NvimTreeFocus<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>k', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
@@ -27,6 +31,9 @@ vim.keymap.set('n', '<C-j>', ':m .+1<CR>==', { desc = 'Move line down' })
 vim.keymap.set('n', '<C-k>', ':m .-2<CR>==', { desc = 'Move line up' })
 vim.keymap.set('v', '<C-j>', ":m '>+1<CR>gv=gv", { desc = 'Move Line Down in Visual Mode' })
 vim.keymap.set('v', '<C-k>', ":m '<-2<CR>gv=gv", { desc = 'Move Line Up in Visual Mode' })
+
+vim.keymap.set('n', ';', ':', { noremap = true, silent = true })
+vim.keymap.set('n', ':', ';', { noremap = true, silent = false })
 
 vim.keymap.set('n', '<leader>yf', ':%y<cr>', { desc = 'yank current file to the clipboard buffer' })
 vim.keymap.set('n', '<leader>df', ':%d_<cr>', { desc = 'delete file content to black hole register' })
