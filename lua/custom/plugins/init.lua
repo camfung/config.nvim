@@ -22,4 +22,13 @@ return {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
+  {
+    'ThePrimeagen/harpoon',
+    config = function()
+      require('harpoon').setup {
+        -- Your Harpoon configuration options here
+      }
+    end,
+  },
 }
+
