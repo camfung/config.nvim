@@ -30,5 +30,8 @@ return {
       }
     end,
   },
+  gopher = {
+    -- https://github.com/olexsmir/gopher.nvim
+    enable = false,
+  },
 }
-
