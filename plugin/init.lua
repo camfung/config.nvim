@@ -18,6 +18,8 @@ vim.keymap.set('v', '<leader>p', '"_dp')
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true, silent = true })
 
+vim.keymap.set('n', '<C-e>', '5<C-e>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-y>', '5<C-y>', { noremap = true, silent = true })
 vim.keymap.set('n', 'n', 'nzzzv', { noremap = true, silent = true })
 vim.keymap.set('n', 'N', 'Nzzzv', { noremap = true, silent = true })
 
