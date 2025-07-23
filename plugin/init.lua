@@ -32,7 +32,8 @@ vim.api.nvim_set_keymap('n', '<leader>w', ':w<CR>', { noremap = true })
 
 vim.api.nvim_set_keymap('n', 'S', '@s', { noremap = true })
 
-vim.keymap.set('n', '<leader>s', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = 'Search And Replace The Word Under The Cursor' })
+vim.keymap.set('n', '<leader>s', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+  { desc = 'Search And Replace The Word Under The Cursor' })
 
 local builtin = require 'telescope.builtin'
 vim.keymap.set('n', '<C-p>', builtin.find_files)
@@ -195,3 +196,5 @@ require('lualine').setup {
   inactive_winbar = {},
   extensions = {},
 }
+
+require("conform").format({ async = false, lsp_fallback = false })
