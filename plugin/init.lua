@@ -32,8 +32,7 @@ vim.api.nvim_set_keymap('n', '<leader>w', ':w<CR>', { noremap = true })
 
 vim.api.nvim_set_keymap('n', 'S', '@s', { noremap = true })
 
-vim.keymap.set('n', '<leader>s', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-  { desc = 'Search And Replace The Word Under The Cursor' })
+vim.keymap.set('n', '<leader>s', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = 'Search And Replace The Word Under The Cursor' })
 
 local builtin = require 'telescope.builtin'
 vim.keymap.set('n', '<C-p>', builtin.find_files)
@@ -197,4 +196,12 @@ require('lualine').setup {
   extensions = {},
 }
 
-require("conform").format({ async = false, lsp_fallback = false })
+require('conform').format { async = false, lsp_fallback = false }
+
+vim.api.nvim_create_user_command('RunModule', function()
+  local file = vim.fn.expand '%:p'
+  local root = vim.fn.getcwd() -- assumes you're in project root
+  local relative = vim.fn.fnamemodify(file, ':~:.')
+  local module = relative:gsub('/', '.'):gsub('%.py$', '')
+  vim.cmd('!cd ' .. root .. ' && python3 -m ' .. module)
+end, {})

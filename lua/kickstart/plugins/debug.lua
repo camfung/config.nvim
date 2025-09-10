@@ -23,17 +23,18 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    'mfussenegger/nvim-dap-python',
   },
   keys = function(_, keys)
     local dap = require 'dap'
     local dapui = require 'dapui'
     return {
       -- Basic debugging keymaps, feel free to change to your liking!
-      { '<F5>', dap.continue, desc = 'Debug: Start/Continue' },
-      { '<F1>', dap.step_into, desc = 'Debug: Step Into' },
-      { '<F2>', dap.step_over, desc = 'Debug: Step Over' },
-      { '<F3>', dap.step_out, desc = 'Debug: Step Out' },
-      { '<leader>b', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
+      { '<F5>',      dap.continue,          desc = 'Debug: Start/Continue' },
+      { '<F2>',      dap.step_into,         desc = 'Debug: Step Into' },
+      { '<F1>',      dap.step_out,          desc = 'Debug: Step Out' },
+      { '<F3>',      dap.step_over,         desc = 'Debug: Step Over' },
+      { '<leader>n', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
       {
         '<leader>B',
         function()
@@ -64,6 +65,7 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'debugpy',
       },
     }
 
@@ -101,5 +103,8 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- Install Python specific config
+    require('dap-python').setup('~/.local/share/nvim/mason/packages/debugpy/venv/bin/python')
   end,
 }
