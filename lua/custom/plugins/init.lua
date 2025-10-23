@@ -30,6 +30,17 @@ return {
       }
     end,
   },
+  {
+    'iruzo/matrix-nvim',
+    priority = 1000,
+    config = function()
+      -- You can configure the matrix theme here if needed
+      -- vim.g.matrix_contrast = true
+      -- vim.g.matrix_borders = false
+      -- vim.g.matrix_disable_background = false
+      -- vim.g.matrix_italic = true
+    end,
+  },
   gopher = {
     -- https://github.com/olexsmir/gopher.nvim
     enable = false,

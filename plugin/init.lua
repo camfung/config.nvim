@@ -166,7 +166,7 @@ require('lualine').setup {
       winbar = {},
     },
     ignore_focus = {},
-    always_divide_middle = true,
+
     globalstatus = false,
     refresh = {
       statusline = 1000,
@@ -205,3 +205,30 @@ vim.api.nvim_create_user_command('RunModule', function()
   local module = relative:gsub('/', '.'):gsub('%.py$', '')
   vim.cmd('!cd ' .. root .. ' && python3 -m ' .. module)
 end, {})
+
+-- Put this in init.lua or lua/config/keymaps.lua
+
+-- Helper function: map in all modes
+local function map_all(lhs, rhs)
+  local modes = { 'n', 'v', 'x', 'o' }
+  for _, mode in ipairs(modes) do
+    vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true })
+  end
+end
+
+-- Remaps
+map_all('n', 'k')
+map_all('j', 'n')
+
+map_all('k', 'j')
+
+map_all('N', 'K')
+map_all('J', 'N')
+
+map_all('K', 'J')
+
+map_all('t', 'f')
+map_all('f', 't')
+
+map_all('T', 'F')
+map_all('F', 'T')
