@@ -68,6 +68,12 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 15
 
+-- Enable code folding
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.foldenable = false -- Don't fold by default when opening files
+vim.opt.foldlevel = 99 -- Keep folds open by default
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -76,6 +82,13 @@ vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to left window' })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to right window' })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to window below' })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to window above' })
+
+-- Code folding keymaps
+vim.keymap.set('n', 'za', 'za', { desc = 'Toggle fold under cursor' })
+vim.keymap.set('n', 'zc', 'zc', { desc = 'Close fold under cursor' })
+vim.keymap.set('n', 'zo', 'zo', { desc = 'Open fold under cursor' })
+vim.keymap.set('n', 'zR', 'zR', { desc = 'Open all folds' })
+vim.keymap.set('n', 'zM', 'zM', { desc = 'Close all folds' })
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
