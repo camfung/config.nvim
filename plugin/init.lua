@@ -226,9 +226,3 @@ map_all('N', 'K')
 map_all('J', 'N')
 
 map_all('K', 'J')
-
-map_all('t', 'f')
-map_all('f', 't')
-
-map_all('T', 'F')
-map_all('F', 'T')
