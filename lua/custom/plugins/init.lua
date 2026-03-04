@@ -4,6 +4,31 @@
 -- See the kickstart.nvim README for more information
 return {
   {
+    'stevearc/oil.nvim',
+    lazy = true,
+    cmd = 'Oil',
+    keys = {
+      { '<leader>o', '<cmd>Oil<cr>', desc = '[O]il file browser' },
+    },
+    opts = {
+      default_file_explorer = false,
+      columns = { 'icon', 'size' },
+      skip_confirm_for_simple_edits = true,
+    },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+  {
+    'folke/trouble.nvim',
+    lazy = true,
+    cmd = 'Trouble',
+    keys = {
+      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Toggle diagnostics' },
+      { '<leader>xd', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer diagnostics' },
+    },
+    opts = {},
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+  {
     'nvim-tree/nvim-tree.lua',
     version = '*',
     lazy = false,

@@ -226,3 +226,10 @@ map_all('N', 'K')
 map_all('J', 'N')
 
 map_all('K', 'J')
+
+-- Copy current file path to clipboard
+vim.keymap.set('n', '<leader>yp', function()
+  local path = vim.fn.expand('%:p')
+  vim.fn.setreg('+', path)
+  print('Copied to clipboard: ' .. path)
+end, { desc = 'Yank current file path to clipboard' })
