@@ -517,7 +517,7 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         eslint = {},
-        --
+        kotlin_lsp = {},  -- JetBrains Kotlin LSP (handled by kotlin.nvim)
 
         lua_ls = {
           -- cmd = {...},
@@ -561,6 +561,7 @@ require('lazy').setup({
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
+          kotlin_lsp = function() end,  -- Handled by kotlin.nvim
         },
       }
     end,

@@ -29,6 +29,19 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   {
+    'AlexandrosAlexiou/kotlin.nvim',
+    ft = { 'kotlin' },
+    dependencies = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      'stevearc/oil.nvim',
+      'folke/trouble.nvim',
+    },
+    config = function()
+      require('kotlin').setup {}
+    end,
+  },
+  {
     'nvim-tree/nvim-tree.lua',
     version = '*',
     lazy = false,
