@@ -237,6 +237,10 @@ end, { desc = 'Yank current file path to clipboard' })
 -- Format JSON in visual selection (any filetype). Pipes selection
 -- through `jfmt`, which locates the JSON inside surrounding text.
 local function format_json_selection()
+  if vim.fn.executable('jfmt') == 0 then
+    vim.notify('jfmt not found in PATH. Install it: pip install jfmt', vim.log.levels.ERROR)
+    return
+  end
   local s_start = vim.fn.getpos("'<")
   local s_end = vim.fn.getpos("'>")
   local srow = s_start[2] - 1
