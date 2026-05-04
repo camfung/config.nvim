@@ -233,3 +233,32 @@ vim.keymap.set('n', '<leader>yp', function()
   vim.fn.setreg('+', path)
   print('Copied to clipboard: ' .. path)
 end, { desc = 'Yank current file path to clipboard' })
+
+-- Format JSON in visual selection (any filetype). Pipes selection
+-- through `jfmt`, which locates the JSON inside surrounding text.
+local function format_json_selection()
+  local s_start = vim.fn.getpos("'<")
+  local s_end = vim.fn.getpos("'>")
+  local srow = s_start[2] - 1
+  local scol = s_start[3] - 1
+  local erow = s_end[2] - 1
+  local ecol = s_end[3]
+  local end_line = vim.api.nvim_buf_get_lines(0, erow, erow + 1, false)[1] or ''
+  if ecol > #end_line then ecol = #end_line end
+  if scol < 0 then scol = 0 end
+
+  local text = table.concat(vim.api.nvim_buf_get_text(0, srow, scol, erow, ecol, {}), '\n')
+  local result = vim.fn.system({ 'jfmt' }, text)
+  if vim.v.shell_error ~= 0 then
+    vim.notify('jfmt failed: ' .. result, vim.log.levels.ERROR)
+    return
+  end
+  result = result:gsub('\n$', '')
+
+  vim.api.nvim_buf_set_text(0, srow, scol, erow, ecol, vim.split(result, '\n', { plain = true }))
+end
+
+_G.format_json_selection = format_json_selection
+
+vim.api.nvim_create_user_command('FormatJson', format_json_selection, { range = true })
+vim.keymap.set('x', '<leader>f', ':<C-u>lua _G.format_json_selection()<CR>', { desc = 'Format JSON in selection', silent = true })
