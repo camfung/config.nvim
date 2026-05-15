@@ -29,19 +29,6 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   {
-    'AlexandrosAlexiou/kotlin.nvim',
-    ft = { 'kotlin' },
-    dependencies = {
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-      'stevearc/oil.nvim',
-      'folke/trouble.nvim',
-    },
-    config = function()
-      require('kotlin').setup {}
-    end,
-  },
-  {
     'nvim-tree/nvim-tree.lua',
     version = '*',
     lazy = false,
@@ -55,6 +42,24 @@ return {
   {
     'numToStr/Comment.nvim',
     opts = {},
+  },
+  {
+    'sindrets/diffview.nvim',
+    lazy = true,
+    cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles', 'DiffviewFocusFiles', 'DiffviewFileHistory' },
+    keys = {
+      { '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = '[G]it [D]iff working tree' },
+      { '<leader>gD', '<cmd>DiffviewOpen HEAD~1<cr>', desc = '[G]it [D]iff last commit' },
+      { '<leader>gh', '<cmd>DiffviewFileHistory<cr>', desc = '[G]it [H]istory (repo)' },
+      { '<leader>gf', '<cmd>DiffviewFileHistory --follow %<cr>', desc = '[G]it history current [F]ile' },
+      { '<leader>gc', '<cmd>DiffviewClose<cr>', desc = '[G]it diff [C]lose' },
+    },
+    opts = {
+      enhanced_diff_hl = true,
+      view = {
+        merge_tool = { layout = 'diff3_mixed' },
+      },
+    },
   },
   {
     'nvim-lualine/lualine.nvim',
