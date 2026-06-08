@@ -66,6 +66,51 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    event = 'VeryLazy',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {
+      options = {
+        mode = 'buffers',
+        diagnostics = 'nvim_lsp',
+        show_buffer_close_icons = false,
+        show_close_icon = false,
+        separator_style = 'thin',
+        offsets = {
+          { filetype = 'NvimTree', text = 'Explorer', highlight = 'Directory', separator = true },
+        },
+      },
+    },
+  },
+  {
+    'folke/persistence.nvim',
+    lazy = false,
+    opts = {},
+    config = function(_, opts)
+      -- What gets saved into the session file.
+      vim.o.sessionoptions = 'buffers,curdir,folds,tabpages,winsize,winpos,terminal,localoptions'
+      require('persistence').setup(opts)
+
+      -- Auto-restore the session for this directory when launching bare `nvim`
+      -- (no file args, not piping from stdin).
+      vim.api.nvim_create_autocmd('StdinReadPre', {
+        callback = function()
+          vim.g.started_with_stdin = true
+        end,
+      })
+      vim.api.nvim_create_autocmd('VimEnter', {
+        group = vim.api.nvim_create_augroup('persistence_autoload', { clear = true }),
+        nested = true,
+        callback = function()
+          if vim.fn.argc() == 0 and not vim.g.started_with_stdin then
+            require('persistence').load()
+          end
+        end,
+      })
+    end,
+  },
+  {
     'ThePrimeagen/harpoon',
     config = function()
       require('harpoon').setup {

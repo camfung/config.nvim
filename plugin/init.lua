@@ -269,3 +269,32 @@ _G.format_json_selection = format_json_selection
 
 vim.api.nvim_create_user_command('FormatJson', format_json_selection, { range = true })
 vim.keymap.set('x', '<leader>f', ':<C-u>lua _G.format_json_selection()<CR>', { desc = 'Format JSON in selection', silent = true })
+
+-- Buffer navigation (bufferline tabs). <Tab>/<S-Tab> cycle; <Tab> overrides the
+-- <C-i> jumplist jump, so []b are provided as a jumplist-safe alternative.
+vim.keymap.set('n', '<Tab>', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
+vim.keymap.set('n', '<S-Tab>', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
+vim.keymap.set('n', ']b', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
+vim.keymap.set('n', '[b', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
+vim.keymap.set('n', 'gb', '<cmd>BufferLinePick<CR>', { silent = true, desc = 'Pick buffer (jump by letter)' })
+-- Close current buffer but keep the window open (switch to prev buffer first).
+vim.keymap.set('n', 'gB', function()
+  local cur = vim.api.nvim_get_current_buf()
+  vim.cmd 'bprevious'
+  if vim.api.nvim_get_current_buf() ~= cur then
+    vim.cmd('bdelete ' .. cur)
+  else
+    vim.cmd 'bdelete'
+  end
+end, { silent = true, desc = 'Close current buffer (keep window)' })
+
+-- Session restore (persistence.nvim). Sessions auto-restore on bare `nvim`.
+vim.keymap.set('n', '<leader>rs', function()
+  require('persistence').load()
+end, { desc = 'Restore session for cwd' })
+vim.keymap.set('n', '<leader>rl', function()
+  require('persistence').load { last = true }
+end, { desc = 'Restore last session' })
+vim.keymap.set('n', '<leader>rd', function()
+  require('persistence').stop()
+end, { desc = "Don't save session on exit" })
