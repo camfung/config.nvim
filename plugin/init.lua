@@ -232,7 +232,7 @@ map_all('K', 'J')
 
 -- Copy current file path to clipboard
 vim.keymap.set('n', '<leader>yp', function()
-  local path = vim.fn.expand('%:p')
+  local path = vim.fn.expand '%:p'
   vim.fn.setreg('+', path)
   print('Copied to clipboard: ' .. path)
 end, { desc = 'Yank current file path to clipboard' })
@@ -240,19 +240,23 @@ end, { desc = 'Yank current file path to clipboard' })
 -- Format JSON in visual selection (any filetype). Pipes selection
 -- through `jfmt`, which locates the JSON inside surrounding text.
 local function format_json_selection()
-  if vim.fn.executable('jfmt') == 0 then
+  if vim.fn.executable 'jfmt' == 0 then
     vim.notify('jfmt not found in PATH. Install it: pip install jfmt', vim.log.levels.ERROR)
     return
   end
-  local s_start = vim.fn.getpos("'<")
-  local s_end = vim.fn.getpos("'>")
+  local s_start = vim.fn.getpos "'<"
+  local s_end = vim.fn.getpos "'>"
   local srow = s_start[2] - 1
   local scol = s_start[3] - 1
   local erow = s_end[2] - 1
   local ecol = s_end[3]
   local end_line = vim.api.nvim_buf_get_lines(0, erow, erow + 1, false)[1] or ''
-  if ecol > #end_line then ecol = #end_line end
-  if scol < 0 then scol = 0 end
+  if ecol > #end_line then
+    ecol = #end_line
+  end
+  if scol < 0 then
+    scol = 0
+  end
 
   local text = table.concat(vim.api.nvim_buf_get_text(0, srow, scol, erow, ecol, {}), '\n')
   local result = vim.fn.system({ 'jfmt' }, text)
@@ -276,9 +280,9 @@ vim.keymap.set('n', '<Tab>', '<cmd>BufferLineCycleNext<CR>', { silent = true, de
 vim.keymap.set('n', '<S-Tab>', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
 vim.keymap.set('n', ']b', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
 vim.keymap.set('n', '[b', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
-vim.keymap.set('n', 'gb', '<cmd>BufferLinePick<CR>', { silent = true, desc = 'Pick buffer (jump by letter)' })
+vim.keymap.set('n', 'gB', '<cmd>BufferLinePick<CR>', { silent = true, desc = 'Pick buffer (jump by letter)' })
 -- Close current buffer but keep the window open (switch to prev buffer first).
-vim.keymap.set('n', 'gB', function()
+vim.keymap.set('n', 'gb', function()
   local cur = vim.api.nvim_get_current_buf()
   vim.cmd 'bprevious'
   if vim.api.nvim_get_current_buf() ~= cur then
@@ -287,6 +291,8 @@ vim.keymap.set('n', 'gB', function()
     vim.cmd 'bdelete'
   end
 end, { silent = true, desc = 'Close current buffer (keep window)' })
+-- Close all buffers (all bufferline tabs).
+vim.keymap.set('n', '<leader>ba', '<cmd>%bdelete<CR>', { silent = true, desc = 'Close all buffers' })
 
 -- Session restore (persistence.nvim). Sessions auto-restore on bare `nvim`.
 vim.keymap.set('n', '<leader>rs', function()

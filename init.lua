@@ -513,7 +513,6 @@ require('lazy').setup({
         gopls = {},
         pyright = { 'black' },
         html = {},
-        -- java_language_server = {},
         cssls = {},
         -- markdown_oxide = {},
 

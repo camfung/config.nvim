@@ -36,7 +36,21 @@ return {
       'nvim-tree/nvim-web-devicons',
     },
     config = function()
-      require('nvim-tree').setup {}
+      local function open_in_os(node)
+        -- directory node: open it; file node: open its parent dir
+        local path = node.type == 'directory' and node.absolute_path or vim.fn.fnamemodify(node.absolute_path, ':h')
+        vim.fn.jobstart({ 'xdg-open', path }, { detach = true })
+      end
+
+      require('nvim-tree').setup {
+        on_attach = function(bufnr)
+          local api = require 'nvim-tree.api'
+          api.config.mappings.default_on_attach(bufnr)
+          vim.keymap.set('n', 'go', function()
+            open_in_os(api.tree.get_node_under_cursor())
+          end, { desc = 'nvim-tree: open in OS file manager', buffer = bufnr, noremap = true, silent = true })
+        end,
+      }
     end,
   },
   {
@@ -91,6 +105,15 @@ return {
       -- What gets saved into the session file.
       vim.o.sessionoptions = 'buffers,curdir,folds,tabpages,winsize,winpos,terminal,localoptions'
       require('persistence').setup(opts)
+
+      -- Close NvimTree before the session is written so the tree window/buffer
+      -- isn't persisted and restored as a junk tab.
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'PersistenceSavePre',
+        callback = function()
+          pcall(vim.cmd, 'NvimTreeClose')
+        end,
+      })
 
       -- Auto-restore the session for this directory when launching bare `nvim`
       -- (no file args, not piping from stdin).
