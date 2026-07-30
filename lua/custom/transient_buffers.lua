@@ -20,9 +20,13 @@ local armed = false
 -- Buffers you open *from* these become sticky.
 local launcher_ft = {
   NvimTree = true,
-  TelescopePrompt = true,
   ['neo-tree'] = true,
 }
+
+-- Telescope uses one prompt filetype for every picker, so we can't tell a
+-- file-open (ctrl+p) from a jump (gd/gr) by filetype alone. File-open pickers
+-- call M.keep_next() to opt the buffer they open into stickiness; jumps don't.
+local keep_next_pick = false
 
 -- Filetypes that are never candidates for wiping (plugin/UI buffers).
 local ignore_ft = {
@@ -57,6 +61,12 @@ local function is_normal_file_buf(buf)
     return false
   end
   return true
+end
+
+-- Called by "open a file" pickers (ctrl+p etc.) so the file they open is kept,
+-- not treated as a transient preview. Jump pickers (gd/gr) don't call this.
+function M.keep_next()
+  keep_next_pick = true
 end
 
 -- Mark a buffer as sticky (kept). Defaults to the current buffer.
@@ -106,8 +116,16 @@ function M.setup()
     group = group,
     callback = function(args)
       -- Arm if we're leaving a launcher; the file it opens comes next.
-      if launcher_ft[vim.bo[args.buf].filetype] then
+      local ft = vim.bo[args.buf].filetype
+      if launcher_ft[ft] then
         armed = true
+      elseif ft == 'TelescopePrompt' then
+        -- Only a file-open picker (which called keep_next) arms stickiness;
+        -- gd/gr and other jump/search pickers stay transient.
+        if keep_next_pick then
+          armed = true
+        end
+        keep_next_pick = false
       end
       -- Wipe the transient buffer we're leaving once it's off-screen.
       local buf = args.buf

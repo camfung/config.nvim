@@ -130,6 +130,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- picker (and not edited) get wiped when you navigate away from them.
 require('custom.transient_buffers').setup()
 
+-- Directory buffers belong to nvim-tree, never bufferline. Unlist them
+-- so no stray "directory" tab shows up.
+vim.api.nvim_create_autocmd({ 'BufAdd', 'BufEnter' }, {
+  callback = function(args)
+    local name = vim.api.nvim_buf_get_name(args.buf)
+    if name ~= '' and vim.fn.isdirectory(name) == 1 then
+      vim.bo[args.buf].buflisted = false
+    end
+  end,
+})
+
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
@@ -309,16 +320,25 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
+      -- File-open pickers keep the file they open (not a transient preview);
+      -- jump pickers like gd/gr stay transient. See custom.transient_buffers.
+      local tb = require 'custom.transient_buffers'
+      local function keep(fn)
+        return function()
+          tb.keep_next()
+          fn()
+        end
+      end
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<C-p>', builtin.find_files, { desc = 'Find files' })
+      vim.keymap.set('n', '<leader>sf', keep(builtin.find_files), { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<C-p>', keep(builtin.find_files), { desc = 'Find files' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+      vim.keymap.set('n', '<leader>s.', keep(builtin.oldfiles), { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
       -- Slightly advanced example of overriding default behavior and theme
@@ -341,6 +361,7 @@ require('lazy').setup({
 
       -- Shortcut for searching your Neovim configuration files
       vim.keymap.set('n', '<leader>sn', function()
+        tb.keep_next()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
     end,
@@ -801,7 +822,7 @@ require('lazy').setup({
     commit = 'cb10516', -- last stable before rewrite
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'python', 'javascript', 'typescript', 'json' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'python', 'javascript', 'typescript', 'json', 'kotlin' },
       auto_install = true,
       highlight = { enable = true },
       indent = { enable = true },
